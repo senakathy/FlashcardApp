@@ -1,11 +1,12 @@
 {
-  "folders": [],
-  "uncategorized": [
+  "folders": [
     {
-      "word": "madre",
-      "meaning": "mom",
-      "folder": ""
-    },
+      "id": "1181584f-2bf3-4a00-b8b3-c0610e97b9ce",
+      "name": "Family",
+      "flashcards": []
+    }
+  ],
+  "uncategorized": [
     {
       "word": "perro",
       "meaning": "dog"
