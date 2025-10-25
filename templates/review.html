@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Review Your Flashcards</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='kpop-simple.css') }}">
     <style>
         .flashcard {
@@ -46,10 +47,9 @@
         }
         .swipe-buttons button {
             margin: 0 10px;
-            padding: 10px 20px;
             width: 120px;
         }
-        .btn-secondary {
+        .btn-secondary.back-button {
             margin-top: 30px;
             display: block;
         }
@@ -57,7 +57,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Review Your Flashcards</h1>
+        <h1 class="text-center">Review Your Flashcards</h1>
         {% if flashcards and flashcards|length > 0 %}
             <div class="flashcard" onclick="this.classList.toggle('flipped')">
                 <div class="card-inner">
@@ -70,13 +70,13 @@
                 </div>
             </div>
             <div class="swipe-buttons">
-                <button onclick="previousCard()">Previous</button>
-                <button onclick="nextCard()">Next</button>
+                <button class="btn btn-secondary" onclick="previousCard()">Previous</button>
+                <button class="btn btn-secondary" onclick="nextCard()">Next</button>
             </div>
         {% else %}
             <p>No flashcards to review yet! Add some on the main page.</p>
         {% endif %}
-        <a href="/" class="btn btn-secondary">Back to Add Cards</a>
+        <a href="/" class="btn btn-secondary back-button">Back to Add Cards</a>
     </div>
     <script>
         let currentIndex = {{ current_index }};
