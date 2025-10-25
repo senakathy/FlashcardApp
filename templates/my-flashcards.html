@@ -3,22 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flashcard App</title>
+    <title>My Flashcards</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='kpop-simple.css') }}">
 </head>
 <body>
     <div class="container text-center py-4">
-        <h1>Flashcard App</h1>
-        <form method="POST">
-            <textarea name="words" rows="4" class="form-control" placeholder="cat:feline animal&#10;dog:canine pet"></textarea>
-            <br>
-            <button type="submit" class="btn btn-primary">Add Words</button>
-        </form>
+        <h1>My Flashcards</h1>
+        {% if flashcards and flashcards|length > 0 %}
+        <ul class="list-group mt-3">
+            {% for card in flashcards %}
+            <li class="list-group-item">{{ card.word }}: {{ card.meaning }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="mt-3">No flashcards yet! Add some on the main page.</p>
+        {% endif %}
         <br>
-        <a href="/my-flashcards" class="btn btn-secondary">My Flashcards</a>
-        <br>
-        <a href="/review" class="btn btn-secondary">Review Flashcards</a>
+        <a href="/" class="btn btn-secondary">Back to Add Cards</a>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

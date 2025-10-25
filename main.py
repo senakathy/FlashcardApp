@@ -46,6 +46,12 @@ def review():
     current_index = 0  # Start with the first card
     return render_template('review.html', flashcards=flashcards, current_index=current_index)
 
+# Route for the my flashcards page (list all flashcards)
+@app.route('/my-flashcards')
+def my_flashcards():
+    flashcards = load_flashcards()
+    return render_template('my-flashcards.html', flashcards=flashcards)
+
 # Run the app
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
