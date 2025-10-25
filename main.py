@@ -3,6 +3,7 @@ import json
 import os
 import nltk
 from googletrans import Translator  # For translating meanings
+translator = Translator()
 nltk.download('punkt', quiet=True)
 
 app = Flask(__name__)
