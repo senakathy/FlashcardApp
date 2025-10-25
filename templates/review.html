@@ -1,0 +1,66 @@
+<!-- tells the browser this is a web page -->
+<!DOCTYPE html> 
+<!-- defines the language of the page -->
+<html lang="en">
+<!-- It starts the head section which is not visible to the user -->
+<head>   
+    <!-- Handles special characters -->
+    <meta charset="UTF-8">
+    <!-- Makes the page fit well on different devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <!-- Define the title of the page -->
+    <title>Review Flashcards</title>
+    <!-- Load bootstrap css for styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Load my custom css style -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='kpop-simple.css') }}">
+    <!-- Ends the setup section -->
+</head>
+    <!-- Starts the visible section of the page -->
+<body>
+    <!-- creater a container for the content -->
+    <!-- "<div>"" is a basic html tag that creates a box -->
+    <!-- container is a bootstrap class that centers the content and adds padding -->
+    <!-- py-4 adds padding to the top and bottom moving t4 units in the y axis -->
+    <div class="container text-center py-4">
+        <h1>Review Your Flashcards</h1> <!-- Title of the container -->
+        <!-- Creates a button that links to the main page -->
+        <!-- mb-3 adds margin to the bottom moving 3 units in the y axis -->
+        <a href="{{ url_for('index') }}" class="btn btn-secondary mb-3">Back to Add Cards</a>
+        <!-- Checks if there are flashcards to review -->
+        {% if flashcards %}
+        <!-- If there are flashcards, it creates a list of them titled "Your Flashcards" -->
+        <h3>Your Flashcards</h3>
+        <!-- Unordered list of flashcards -->
+        <!-- list-group is a bootstrap class that turns a plain list into a styled list -->
+        <!-- mt-3 adds margin to the top moving 3 units in the y axis -->
+        <ul class="list-group mt-3">
+            <!-- Loops through each flashcard and creates a list item for it -->
+            {% for card in flashcards %}
+            <!-- Starts one list item -->
+            <!-- li makes each item look like a separate card -->
+            <li class="list-group-item">
+                <!-- Makes the word bold -->
+                <strong>{{ card.word }}</strong>: {{ card.meaning }}
+                <!-- Ends the list item -->
+            </li>
+            <!-- Ends the loop -->
+            {% endfor %}
+        </ul>
+        <!-- If there are no flashcards, it displays a message-->
+        {% else %}
+        <p>No flashcards yet! Add some on the main page.</p>
+        <!-- Ends the if statement -->
+        {% endif %}
+    <!-- Ends the container -->
+    </div>
+    <!-- Loads bootstrap javascript for interactive elements -->
+    <!-- "<script>" is a basic html tag that runs javascript code" -->
+    <!-- "src" is the source of the javascript code -->
+    <!-- the link leads to the bootstrap javascript file -->
+    <!-- the file includes the code for interactive elements like buttons and dropdowns -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">     </script>
+<!-- Ends the visible section of the page -->
+</body>
+<!-- Ends the html document -->
+</html>

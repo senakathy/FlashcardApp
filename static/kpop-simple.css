@@ -1,0 +1,217 @@
+/* K-Pop Simple Style - Purple & White */
+
+/* Import a clean modern font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+/* Reset and base styles for all elements. * -> means everything
+Ensures buttons and boxes line up well */
+* {
+    margin: 0; //remove default margin
+    padding: 0; //remove default padding
+    box-sizing: border-box; //include padding and border in the element's width and height
+}
+
+body {
+    background: #f5f7fa; /* Light gray-white background */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #333;
+    line-height: 1.6; // improve readability with 60% extra space between lines
+    min-height: 100vh; // ensure the body takes at least the full height of the screen. Full       viewport height.
+}
+
+/* Main container - The white flashcard */ 
+.container { 
+    max-width: 500px; // max width of the container -> good for phones
+    margin: 0 auto;
+    padding: 30px;
+    background: white;
+    border-radius: 16px; // rounded corners
+    box-shadow: 0 4px 20px rgba(106, 27, 154, 0.1); /* Subtle purple shadow. The a stands for      transparency */
+    
+}
+
+/* Title styling */
+h1 {
+    color: #6a1b9a; /* Deep purple */
+    font-size: 28px;
+    font-weight: 600; //boldness -> semibold
+    text-align: center;
+    margin-bottom: 30px; //space below the title
+    letter-spacing: -0.5px; // letters slightly closer together
+}
+
+/* Subtitle */
+h3 {
+    color: #6a1b9a;
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Styles text boxes like username, password, and flashcard input */
+input[type="text"], /*Targets all text inputs*/
+input[type="password"], 
+textarea {
+    width: 100%; /*Full width of the container ok*/
+    padding: 14px;
+    border: 2px solid #e1e5e9; /* Light gray border */
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: inherit; /*Uses the same font as the page*/
+    margin-bottom: 15px;
+    /* when hovering over the box, the border color and shadow will change smoothly over 0.3       seconds*/
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; 
+}
+/*Focus state for input fields when you click on the box.*/  
+input[type="text"]:focus, 
+input[type="password"]:focus, 
+textarea:focus {
+    outline: none;
+    border-color: #6a1b9a; /* Purple border on focus */
+    box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.1);
+}
+
+/* Placeholder text */
+input::placeholder, 
+textarea::placeholder {
+    color: #9ca3af;
+    font-weight: 400;
+}
+
+/* Buttons */
+.btn {
+    /*allows buttons to be in line with other elements. */
+    display: inline-block; 
+    /*12px top/bottom, 24px left/right space inside.*/
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    /*No underline (for link buttons).*/
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+/* Primary button (Add Words, Login, Register) */
+.btn-primary {
+    background: #6a1b9a; /* Deep purple */
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #5a168a; /* Darker purple */
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(106, 27, 154, 0.3);
+}
+
+/* Secondary button (Review, Logout) */
+.btn-secondary {
+    background: white;
+    color: #6a1b9a;
+    border: 2px solid #6a1b9a;
+}
+
+.btn-secondary:hover {
+    background: #6a1b9a;
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* Flashcard list Container*/
+.list-group {
+    margin-top: 20px;
+}
+/*Actual flashcard*/
+.list-group-item {
+    background: white;
+    border: 1px solid #e1e5e9;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+    box-shadow: 0 4px 12px rgba(106, 27, 154, 0.1);
+    transform: translateY(-1px); /*lifts the card*/
+    border-color: #6a1b9a;
+}
+
+/* Alert messages */
+.alert {
+    border-radius: 10px;
+    border: none;
+    margin-bottom: 20px;
+    padding: 15px;
+    font-weight: 400;
+}
+
+.alert-warning {
+    background: #fff3cd;
+    color: #856404;
+    border-left: 4px solid #6a1b9a; /*purple stripe on the left*/
+}
+
+/* Links */
+a {
+    color: #6a1b9a;
+    text-decoration: none; /*No underline*/
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #ab47bc;
+    text-decoration: underline;
+}
+
+/* Welcome message */
+.welcome {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-left: 4px solid #6a1b9a;
+    text-align: center;
+    font-weight: 400;
+}
+
+/* Mobile responsiveness - Changes the layout for phones*/
+@media (max-width: 600px) {
+    .container {
+        margin: 20px 10px;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .btn {
+        padding: 12px 20px;
+        font-size: 15px;
+    }
+}
+
+/* Loading animation (for future use) - It creates a Spinning Purple Circle */
+.loading {
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #6a1b9a;
+    border-radius: 50%; /*Makes it a circle*/
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite; 
+    margin: 10px auto; /* auto center the circle on the page*/
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); } /*Starts at 0 degrees*/
+    100% { transform: rotate(360deg); } /*Ends at 360 degrees*/
+}
