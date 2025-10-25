@@ -34,12 +34,13 @@ args = "To-Do App"
 name = "To-Do App"
 author = "agent"
 
+[workflows.workflow.metadata]
+outputType = "webview"
+
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python main.py"
-
-[workflows.workflow.metadata]
-outputType = "console"
+waitForPort = 5000
 
 [[ports]]
 localPort = 8080
@@ -48,3 +49,7 @@ externalPort = 80
 [[ports]]
 localPort = 41331
 externalPort = 3000
+
+[[ports]]
+localPort = 5000
+externalPort = 80
