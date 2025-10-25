@@ -15,7 +15,7 @@ def load_translation_cache():
         with open(cache_file, 'r') as f:
             content = f.read().strip()
             if content:
-                return json.load(f)
+                return json.loads(content)
     return {}
 
 def save_translation_cache(cache):
@@ -27,7 +27,7 @@ def load_flashcards():
         with open(FLASHCARDS_FILE, 'r') as f:
             content = f.read().strip()
             if content:
-                return json.load(f)
+                return json.loads(content)
             else:
                 return []
     return []
