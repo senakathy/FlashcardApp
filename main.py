@@ -40,52 +40,41 @@ def save_flashcards(flashcards):
 def index():
     flashcards = load_flashcards()
     if request.method == 'POST':
-        word_list = request.form['words'].split('\n')
-        for line in word_list:
+        # Find new cards to add
+        new_cards = []
+        for line in request.form['words'].split('\n'):
             if ':' in line:
                 word, meaning = line.split(':', 1)
-                flashcards.append({'word': word.strip(), 'meaning': meaning.strip(), 'folder': ''})
+                word = word.strip()
+                meaning = meaning.strip()
+                if word not in [card['word'] for card in flashcards]:
+                    new_cards.append({'word': word, 'meaning': meaning, 'folder': ''})
 
-        save_flashcards(flashcards)
-
-        # Auto-group flashcards by meaning with meaningful folder names
-        if len(flashcards) > 0:
+        # If there are new cards, categorize them
+        if new_cards:
             translation_cache = load_translation_cache()
             categories = {
                 'Animals': ['animal', 'cat', 'dog', 'lion', 'tiger', 'gato', 'perro', 'puppy', 'kitten', 'feline', 'canine'],
-                'Food': ['food', 'eat', 'dish', 'meal', 'comida', 'fruit', 'vegetable', 'snack'],
+                'Food': ['food', 'eat', 'dish', 'meal', 'comida', 'fruit', 'vegetable', 'snack', 'cake', 'pastel'],
                 'Objects': ['thing', 'object', 'tool', 'item', 'furniture', 'chair', 'table'],
                 'Uncategorized': []
             }
 
-            new_cards = []
-            submitted_words = [line.split(':', 1)[0].strip() for line in request.form['words'].split('\n') if ':' in line]
-            for line in request.form['words'].split('\n'):
-                if ':' in line:
-                    word, meaning = line.split(':', 1)
-                    word = word.strip()
-                    meaning = meaning.strip()
-                    if word not in [card['word'] for card in flashcards]:
-                        new_cards.append({'word': word, 'meaning': meaning, 'folder': ''})
+            # Categorize new cards
+            for card in new_cards:
+                if card['meaning'] not in translation_cache:
+                    translation_cache[card['meaning']] = translator.translate(card['meaning'], dest='en').text
+                translated_meaning = translation_cache[card['meaning']]
+                folder = 'Uncategorized'
+                for cat_name, keywords in categories.items():
+                    if any(keyword in translated_meaning.lower() for keyword in keywords):
+                        folder = cat_name
+                        break
+                card['folder'] = folder
 
-            if new_cards:
-                flashcards.extend(new_cards)
-                save_flashcards(flashcards)
-
-                for card in flashcards:
-                    if not card.get('folder'):
-                        if card['meaning'] not in translation_cache:
-                            translation_cache[card['meaning']] = translator.translate(card['meaning'], dest='en').text
-                        translated_meaning = translation_cache[card['meaning']]
-                        folder = 'Uncategorized'
-                        for cat_name, keywords in categories.items():
-                            if any(keyword in translated_meaning.lower() for keyword in keywords):
-                                folder = cat_name
-                                break
-                        card['folder'] = folder
-
-                save_translation_cache(translation_cache)
-
+            # Add new cards to flashcards
+            flashcards.extend(new_cards)
+            save_translation_cache(translation_cache)
             save_flashcards(flashcards)
 
     return render_template('input.html', flashcards=flashcards)
