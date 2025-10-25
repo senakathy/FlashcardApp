@@ -21,13 +21,12 @@ body {
 
 /* Main container - The white flashcard */ 
 .container { 
-    max-width: 500px; // max width of the container -> good for phones
-    margin: 0 auto;
+    max-width: 500px;
+    margin: 40px auto;
     padding: 30px;
     background: white;
-    border-radius: 16px; // rounded corners
-    box-shadow: 0 4px 20px rgba(106, 27, 154, 0.1); /* Subtle purple shadow. The a stands for      transparency */
-    
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(106, 27, 154, 0.1);
 }
 
 /* Title styling */
