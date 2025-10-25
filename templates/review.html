@@ -5,23 +5,100 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Review Your Flashcards</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='kpop-simple.css') }}">
+    <style>
+        .flashcard {
+            width: 300px;
+            height: 200px;
+            perspective: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 1px solid #e1e5e9;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 16px;
+        }
+        .card-back {
+            transform: rotateY(180deg);
+        }
+        .flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        .swipe-buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .swipe-buttons button {
+            margin: 0 10px;
+            padding: 10px 20px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Review Your Flashcards</h1>
-        {% if folders %}
-            {% for folder, cards in folders.items() %}
-                <h3>{{ folder }}</h3>
-                <ul class="list-group">
-                    {% for card in cards %}
-                        <li class="list-group-item">{{ card.word }}: {{ card.meaning }}</li>
-                    {% endfor %}
-                </ul>
-            {% endfor %}
+        {% if flashcards and flashcards|length > 0 %}
+            <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <h3>{{ flashcards[current_index].word }}</h3>
+                    </div>
+                    <div class="card-back">
+                        <h3>{{ flashcards[current_index].meaning }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="swipe-buttons">
+                <button onclick="previousCard()">Previous</button>
+                <button onclick="nextCard()">Next</button>
+            </div>
         {% else %}
             <p>No flashcards to review yet! Add some on the main page.</p>
         {% endif %}
         <a href="/" class="btn btn-secondary">Back to Add Cards</a>
     </div>
+    <script>
+        let currentIndex = {{ current_index }};
+        const flashcards = {{ flashcards|tojson }};
+
+        function nextCard() {
+            if (currentIndex < flashcards.length - 1) {
+                currentIndex++;
+                updateCard();
+            }
+        }
+
+        function previousCard() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCard();
+            }
+        }
+
+        function updateCard() {
+            const flashcard = document.querySelector('.flashcard');
+            flashcard.classList.remove('flipped'); // Reset flip on move
+            const front = document.querySelector('.card-front h3');
+            const back = document.querySelector('.card-back h3');
+            front.textContent = flashcards[currentIndex].word;
+            back.textContent = flashcards[currentIndex].meaning;
+        }
+    </script>
 </body>
 </html>
