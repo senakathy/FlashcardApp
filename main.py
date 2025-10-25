@@ -2,10 +2,7 @@ from flask import Flask, request, render_template
 import json
 import os
 import nltk
-from polyglot.detect import Detector  # Offline language detection
-from polyglot.text import Text  # Offline translation and analysis
-from sentence_transformers import SentenceTransformer  # For semantic embeddings
-import numpy as np
+from googletrans import Translator  # For translating meanings
 nltk.download('punkt', quiet=True)
 
 app = Flask(__name__)
@@ -23,21 +20,6 @@ def load_translation_cache():
 def save_translation_cache(cache):
     with open('translation_cache.json', 'w') as f:
         json.dump(cache, f)
-
-def get_translation_and_embedding(meaning, model, translation_cache):
-    if meaning not in translation_cache:
-        try:
-            text = Text(meaning)
-            if text.languages:
-                translated = text.translate('en') if len(text.words) > 0 else meaning
-                translation_cache[meaning] = translated
-            else:
-                translation_cache[meaning] = meaning
-        except Exception:
-            translation_cache[meaning] = meaning
-    translated_meaning = translation_cache[meaning]
-    embedding = model.encode(translated_meaning)
-    return translated_meaning, embedding
 
 def load_flashcards():               
     if os.path.exists(FLASHCARDS_FILE):
@@ -65,21 +47,15 @@ def index():
 
         save_flashcards(flashcards)
 
-        # Auto-group flashcards by meaning with meaningful folder names using embeddings
+        # Auto-group flashcards by meaning with meaningful folder names
         if len(flashcards) > 0:
             translation_cache = load_translation_cache()
-            model = SentenceTransformer('all-MiniLM-L6-v2')
             categories = {
-                'Animals': ['animal', 'cat', 'dog', 'puppy', 'kitten'],
-                'Food': ['food', 'eat', 'dish', 'fruit', 'snack'],
-                'Objects': ['thing', 'object', 'tool', 'furniture'],
+                'Animals': ['animal', 'cat', 'dog', 'lion', 'tiger', 'gato', 'perro', 'puppy', 'kitten', 'feline', 'canine'],
+                'Food': ['food', 'eat', 'dish', 'meal', 'comida', 'fruit', 'vegetable', 'snack'],
+                'Objects': ['thing', 'object', 'tool', 'item', 'furniture', 'chair', 'table'],
                 'Uncategorized': []
             }
-            category_embeddings = {}
-            for cat_name, keywords in categories.items():
-                if keywords:
-                    avg_embedding = np.mean([model.encode(keyword) for keyword in keywords], axis=0)
-                    category_embeddings[cat_name] = avg_embedding
 
             new_cards = []
             submitted_words = [line.split(':', 1)[0].strip() for line in request.form['words'].split('\n') if ':' in line]
@@ -97,14 +73,14 @@ def index():
 
                 for card in flashcards:
                     if not card.get('folder'):
-                        translated_meaning, embedding = get_translation_and_embedding(card['meaning'], model, translation_cache)
+                        if card['meaning'] not in translation_cache:
+                            translation_cache[card['meaning']] = translator.translate(card['meaning'], dest='en').text
+                        translated_meaning = translation_cache[card['meaning']]
                         folder = 'Uncategorized'
-                        max_similarity = -1
-                        for cat_name, cat_embedding in category_embeddings.items():
-                            similarity = np.dot(embedding, cat_embedding) / (np.linalg.norm(embedding) * np.linalg.norm(cat_embedding))
-                            if similarity > max_similarity:
-                                max_similarity = similarity
+                        for cat_name, keywords in categories.items():
+                            if any(keyword in translated_meaning.lower() for keyword in keywords):
                                 folder = cat_name
+                                break
                         card['folder'] = folder
 
                 save_translation_cache(translation_cache)
