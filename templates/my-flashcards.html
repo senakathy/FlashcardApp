@@ -20,6 +20,10 @@
             align-items: center;
             margin-bottom: 10px;
         }
+        .folder-delete-btn {
+            font-size: 0.75em;
+            padding: 3px 10px;
+        }
         .folder-name {
             color: #6a1b9a;
             font-weight: bold;
@@ -136,7 +140,7 @@
                         📁 {{ folder.name }} ({{ folder.flashcards|length }} cards)
                     </span>
                     <form method="POST" action="/delete-folder/{{ folder.id }}" style="display: inline;">
-                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this folder? Flashcards will move to Uncategorized.')">Delete</button>
+                        <button type="submit" class="btn btn-sm btn-danger folder-delete-btn" onclick="return confirm('Delete this folder? Flashcards will move to Uncategorized.')">Delete</button>
                     </form>
                 </div>
                 <div class="folder-cards">
