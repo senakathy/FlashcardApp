@@ -1,5 +1,11 @@
 {
-  "folders": [],
+  "folders": [
+    {
+      "id": "85f35269-00d9-45ac-96bb-eb760561c303",
+      "name": "Family",
+      "flashcards": []
+    }
+  ],
   "uncategorized": [
     {
       "word": "perro",
@@ -24,10 +30,6 @@
       "word": "pastel",
       "meaning": "cake",
       "folder": ""
-    },
-    {
-      "word": "mesero",
-      "meaning": "waiter"
     }
   ]
 }
