@@ -128,6 +128,27 @@ def move_flashcard():
     save_data(data)
     return redirect(url_for('my_flashcards'))
 
+# Route to delete a flashcard
+@app.route('/delete-flashcard', methods=['POST'])
+def delete_flashcard():
+    data = load_data()
+    flashcard_index = int(request.form.get('flashcard_index', 0))
+    from_folder = request.form.get('from_folder', '')
+    
+    # Remove the flashcard from its location
+    if from_folder == 'uncategorized':
+        if flashcard_index < len(data['uncategorized']):
+            data['uncategorized'].pop(flashcard_index)
+    else:
+        for folder in data['folders']:
+            if folder['id'] == from_folder:
+                if flashcard_index < len(folder['flashcards']):
+                    folder['flashcards'].pop(flashcard_index)
+                break
+    
+    save_data(data)
+    return redirect(url_for('my_flashcards'))
+
 # Route to delete a folder
 @app.route('/delete-folder/<folder_id>', methods=['POST'])
 def delete_folder(folder_id):
