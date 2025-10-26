@@ -89,11 +89,37 @@ def home():
     return render_template('input.html', folders=data['folders'])
 
 # Route for the review page (flip cards with swipe)
-@app.route('/review')
+@app.route('/review', methods=['GET', 'POST'])
 def review():
-    flashcards = get_all_flashcards()
-    current_index = 0
-    return render_template('review.html', flashcards=flashcards, current_index=current_index)
+    data = load_data()
+    
+    if request.method == 'POST':
+        # Get selected folders from form
+        selected_folders = request.form.getlist('selected_folders')
+        flashcards = []
+        
+        if 'all' in selected_folders:
+            # Review all flashcards
+            flashcards = get_all_flashcards()
+        else:
+            # Review only selected folders
+            if 'uncategorized' in selected_folders:
+                flashcards.extend(data['uncategorized'])
+            
+            for folder_id in selected_folders:
+                if folder_id != 'uncategorized':
+                    for folder in data['folders']:
+                        if folder['id'] == folder_id:
+                            flashcards.extend(folder['flashcards'])
+                            break
+        
+        current_index = 0
+        return render_template('review.html', flashcards=flashcards, current_index=current_index, 
+                             folders=data['folders'], show_selection=False)
+    
+    # GET request - show folder selection
+    return render_template('review.html', flashcards=[], current_index=0, 
+                         folders=data['folders'], show_selection=True)
 
 # Route for the my flashcards page (list all flashcards and folders)
 @app.route('/my-flashcards')

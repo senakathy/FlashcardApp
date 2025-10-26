@@ -58,25 +58,63 @@
 <body>
     <div class="container">
         <h1 class="text-center">Review Your Flashcards</h1>
-        {% if flashcards and flashcards|length > 0 %}
-            <div class="flashcard" onclick="flipCard(this)">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <h3>{{ flashcards[current_index].word }}</h3>
+        
+        {% if show_selection %}
+            <div class="text-center" style="max-width: 500px; margin: 0 auto;">
+                <form method="POST">
+                    <h4 class="mb-3">Select folders to review:</h4>
+                    <div class="mb-3" style="text-align: left;">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="selected_folders" value="all" id="folder_all">
+                            <label class="form-check-label" for="folder_all">
+                                <strong>📚 All Flashcards</strong>
+                            </label>
+                        </div>
+                        <hr>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="selected_folders" value="uncategorized" id="folder_uncategorized">
+                            <label class="form-check-label" for="folder_uncategorized">
+                                📄 Uncategorized
+                            </label>
+                        </div>
+                        {% for folder in folders %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="selected_folders" value="{{ folder.id }}" id="folder_{{ folder.id }}">
+                            <label class="form-check-label" for="folder_{{ folder.id }}">
+                                📁 {{ folder.name }}
+                            </label>
+                        </div>
+                        {% endfor %}
                     </div>
-                    <div class="card-back">
-                        <h3>{{ flashcards[current_index].meaning }}</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="swipe-buttons">
-                <button class="btn btn-secondary" onclick="previousCard()">Previous</button>
-                <button class="btn btn-secondary" onclick="nextCard()">Next</button>
+                    <button type="submit" class="btn btn-primary">Start Review</button>
+                </form>
+                <br>
+                <a href="/home" class="btn btn-secondary">Back to Add Cards</a>
             </div>
         {% else %}
-            <p>No flashcards to review yet! Add some on the main page.</p>
+            {% if flashcards and flashcards|length > 0 %}
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <h3>{{ flashcards[current_index].word }}</h3>
+                        </div>
+                        <div class="card-back">
+                            <h3>{{ flashcards[current_index].meaning }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="swipe-buttons">
+                    <button class="btn btn-secondary" onclick="previousCard()">Previous</button>
+                    <button class="btn btn-secondary" onclick="nextCard()">Next</button>
+                </div>
+                <a href="/review" class="btn btn-secondary back-button">Change Selection</a>
+            {% else %}
+                <p class="text-center">No flashcards found in the selected folders!</p>
+                <div class="text-center">
+                    <a href="/review" class="btn btn-secondary">Back to Selection</a>
+                </div>
+            {% endif %}
         {% endif %}
-        <a href="/home" class="btn btn-secondary back-button">Back to Add Cards</a>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url_for('static', filename='sounds.js') }}"></script>
@@ -107,7 +145,7 @@
 
         function updateCard() {
             const flashcard = document.querySelector('.flashcard');
-            flashcard.classList.remove('flipped'); // Reset flip on move
+            flashcard.classList.remove('flipped');
             const front = document.querySelector('.card-front h3');
             const back = document.querySelector('.card-back h3');
             front.textContent = flashcards[currentIndex].word;
