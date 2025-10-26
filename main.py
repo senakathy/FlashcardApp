@@ -94,14 +94,20 @@ def move_flashcard():
     from_folder = request.form.get('from_folder', '')
     to_folder = request.form.get('to_folder', '')
     
+    # Only move if a destination folder was selected
+    if not to_folder:
+        return redirect(url_for('my_flashcards'))
+    
     # Find and remove the flashcard from its current location
     flashcard = None
     if from_folder == 'uncategorized':
-        flashcard = data['uncategorized'].pop(flashcard_index)
+        if flashcard_index < len(data['uncategorized']):
+            flashcard = data['uncategorized'].pop(flashcard_index)
     else:
         for folder in data['folders']:
             if folder['id'] == from_folder:
-                flashcard = folder['flashcards'].pop(flashcard_index)
+                if flashcard_index < len(folder['flashcards']):
+                    flashcard = folder['flashcards'].pop(flashcard_index)
                 break
     
     # Add flashcard to new location
