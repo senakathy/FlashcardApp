@@ -9,15 +9,7 @@
 </head>
 <body>
     <div class="container text-center py-4">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h1 style="margin: 0;">Flashcard App</h1>
-            <div>
-                {% if user.profile_image_url %}
-                <img src="{{ user.profile_image_url }}" alt="Profile" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-right: 10px;">
-                {% endif %}
-                <a href="{{ url_for('replit_auth.logout') }}" class="btn btn-sm btn-outline-secondary">Logout</a>
-            </div>
-        </div>
+        <h1>Flashcard App</h1>
         <form method="POST">
             <textarea name="words" rows="4" class="form-control" placeholder="cat:feline animal&#10;dog:canine pet"></textarea>
             <br>

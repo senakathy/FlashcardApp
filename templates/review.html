@@ -57,15 +57,7 @@
 </head>
 <body>
     <div class="container">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h1 style="margin: 0;">Review Your Flashcards</h1>
-            <div>
-                {% if user.profile_image_url %}
-                <img src="{{ user.profile_image_url }}" alt="Profile" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-right: 10px;">
-                {% endif %}
-                <a href="{{ url_for('replit_auth.logout') }}" class="btn btn-sm btn-outline-secondary">Logout</a>
-            </div>
-        </div>
+        <h1 class="text-center">Review Your Flashcards</h1>
         {% if flashcards and flashcards|length > 0 %}
             <div class="flashcard" onclick="this.classList.toggle('flipped')">
                 <div class="card-inner">
@@ -84,7 +76,7 @@
         {% else %}
             <p>No flashcards to review yet! Add some on the main page.</p>
         {% endif %}
-        <a href="/home" class="btn btn-secondary back-button">Back to Add Cards</a>
+        <a href="/" class="btn btn-secondary back-button">Back to Add Cards</a>
     </div>
     <script>
         let currentIndex = {{ current_index }};
