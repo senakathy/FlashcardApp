@@ -7,16 +7,16 @@
         {
           "word": "perro",
           "meaning": "dog"
+        },
+        {
+          "word": "pero",
+          "meaning": "but",
+          "folder": ""
         }
       ]
     }
   ],
   "uncategorized": [
-    {
-      "word": "pero",
-      "meaning": "but",
-      "folder": ""
-    },
     {
       "word": "comedor",
       "meaning": "kitchen",

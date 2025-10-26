@@ -31,6 +31,20 @@
             background: white;
             border: 1px solid #ddd;
             border-radius: 5px;
+            cursor: move;
+            transition: all 0.2s;
+        }
+        .flashcard-item:hover {
+            box-shadow: 0 2px 8px rgba(106, 27, 154, 0.2);
+        }
+        .flashcard-item.dragging {
+            opacity: 0.5;
+            transform: scale(0.95);
+        }
+        .folder-section.drag-over {
+            background: #e8d5f0;
+            border-color: #6a1b9a;
+            box-shadow: 0 0 10px rgba(106, 27, 154, 0.3);
         }
         .move-controls {
             margin-top: 10px;
@@ -69,7 +83,7 @@
         <!-- Display Folders -->
         {% if folders %}
             {% for folder in folders %}
-            <div class="folder-section">
+            <div class="folder-section" data-folder-id="{{ folder.id }}" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragleave="handleDragLeave(event)">
                 <div class="folder-header">
                     <span class="folder-name">📁 {{ folder.name }} ({{ folder.flashcards|length }} cards)</span>
                     <form method="POST" action="/delete-folder/{{ folder.id }}" style="display: inline;">
@@ -78,7 +92,7 @@
                 </div>
                 {% if folder.flashcards %}
                     {% for card in folder.flashcards %}
-                    <div class="flashcard-item">
+                    <div class="flashcard-item" draggable="true" data-index="{{ loop.index0 }}" data-from-folder="{{ folder.id }}" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">
                         <strong>{{ card.word }}</strong>: {{ card.meaning }}
                         <div class="move-controls">
                             <button type="button" class="btn btn-sm btn-secondary" onclick="toggleMoveSelector(this)">Move</button>
@@ -110,13 +124,13 @@
         {% endif %}
 
         <!-- Uncategorized Flashcards -->
-        <div class="folder-section">
+        <div class="folder-section" data-folder-id="uncategorized" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragleave="handleDragLeave(event)">
             <div class="folder-header">
                 <span class="folder-name">📄 Uncategorized ({{ uncategorized|length }} cards)</span>
             </div>
             {% if uncategorized %}
                 {% for card in uncategorized %}
-                <div class="flashcard-item">
+                <div class="flashcard-item" draggable="true" data-index="{{ loop.index0 }}" data-from-folder="uncategorized" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">
                     <strong>{{ card.word }}</strong>: {{ card.meaning }}
                     <div class="move-controls">
                         <button type="button" class="btn btn-sm btn-secondary" onclick="toggleMoveSelector(this)">Move</button>
@@ -150,6 +164,90 @@
         function toggleMoveSelector(element) {
             const selector = element.parentElement.querySelector('.folder-selector') || element;
             selector.classList.toggle('active');
+        }
+
+        let draggedCard = null;
+
+        function handleDragStart(event) {
+            draggedCard = event.target;
+            draggedCard.classList.add('dragging');
+            event.dataTransfer.effectAllowed = 'move';
+            event.dataTransfer.setData('text/html', event.target.innerHTML);
+        }
+
+        function handleDragEnd(event) {
+            event.target.classList.remove('dragging');
+            // Remove drag-over class from all folders
+            document.querySelectorAll('.folder-section').forEach(folder => {
+                folder.classList.remove('drag-over');
+            });
+        }
+
+        function handleDragOver(event) {
+            if (event.preventDefault) {
+                event.preventDefault();
+            }
+            event.dataTransfer.dropEffect = 'move';
+            
+            // Add visual feedback
+            const folderSection = event.currentTarget;
+            folderSection.classList.add('drag-over');
+            
+            return false;
+        }
+
+        function handleDragLeave(event) {
+            event.currentTarget.classList.remove('drag-over');
+        }
+
+        function handleDrop(event) {
+            if (event.stopPropagation) {
+                event.stopPropagation();
+            }
+            event.preventDefault();
+
+            const targetFolder = event.currentTarget;
+            targetFolder.classList.remove('drag-over');
+
+            if (draggedCard) {
+                const fromFolder = draggedCard.getAttribute('data-from-folder');
+                const toFolder = targetFolder.getAttribute('data-folder-id');
+                const cardIndex = draggedCard.getAttribute('data-index');
+
+                // Don't move if dropping in the same folder
+                if (fromFolder === toFolder) {
+                    return false;
+                }
+
+                // Create a form and submit it
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/move-flashcard';
+
+                const indexInput = document.createElement('input');
+                indexInput.type = 'hidden';
+                indexInput.name = 'flashcard_index';
+                indexInput.value = cardIndex;
+
+                const fromInput = document.createElement('input');
+                fromInput.type = 'hidden';
+                fromInput.name = 'from_folder';
+                fromInput.value = fromFolder;
+
+                const toInput = document.createElement('input');
+                toInput.type = 'hidden';
+                toInput.name = 'to_folder';
+                toInput.value = toFolder;
+
+                form.appendChild(indexInput);
+                form.appendChild(fromInput);
+                form.appendChild(toInput);
+
+                document.body.appendChild(form);
+                form.submit();
+            }
+
+            return false;
         }
     </script>
 </body>
