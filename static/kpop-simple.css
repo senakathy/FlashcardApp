@@ -1,216 +1,281 @@
-/* K-Pop Simple Style - Purple & White */
+/* ============================================================================
+   K-POP SIMPLE STYLE - PURPLE & WHITE THEME
+   This CSS file styles the entire flashcard application
+   Main colors: Deep Purple (#6a1b9a) and White
+   ============================================================================ */
 
-/* Import a clean modern font */
+/* Import the Inter font from Google Fonts - a clean, modern typeface */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
-/* Reset and base styles for all elements. * -> means everything
-Ensures buttons and boxes line up well */
+/* ============================================================================
+   RESET AND BASE STYLES
+   These apply to ALL elements and set up the foundation
+   ============================================================================ */
+
+/* The * selector means "everything on the page" */
 * {
-    margin: 0; //remove default margin
-    padding: 0; //remove default padding
-    box-sizing: border-box; //include padding and border in the element's width and height
+    margin: 0;  /* Remove default margins from all elements */
+    padding: 0;  /* Remove default padding from all elements */
+    box-sizing: border-box;  /* Include padding/border in element width/height */
 }
 
+/* Style the body (the entire page background) */
 body {
-    background: #f5f7fa; /* Light gray-white background */
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    color: #333;
-    line-height: 1.6; // improve readability with 60% extra space between lines
-    min-height: 100vh; // ensure the body takes at least the full height of the screen. Full       viewport height.
+    background: #f5f7fa;  /* Light gray-white background color */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;  /* Font stack (tries Inter first) */
+    color: #333;  /* Dark gray text color */
+    line-height: 1.6;  /* 1.6x spacing between lines for readability */
+    min-height: 100vh;  /* At least 100% of viewport height (full screen) */
 }
 
-/* Main container - The white flashcard */ 
+/* ============================================================================
+   CONTAINER - The white card that holds content
+   ============================================================================ */
+
 .container { 
-    max-width: 500px;
-    margin: 40px auto;
-    padding: 30px;
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(106, 27, 154, 0.1);
+    max-width: 500px;  /* Never wider than 500 pixels */
+    margin: 40px auto;  /* 40px top/bottom, auto left/right centers it */
+    padding: 30px;  /* Space inside the container */
+    background: white;  /* White background */
+    border-radius: 16px;  /* Rounded corners (16px radius) */
+    box-shadow: 0 4px 20px rgba(106, 27, 154, 0.1);  /* Subtle purple shadow */
+    /* Shadow: horizontal-offset vertical-offset blur-radius color */
 }
 
-/* Title styling */
+/* ============================================================================
+   HEADINGS - Titles and subtitles
+   ============================================================================ */
+
+/* Main heading (h1) - like "⚡The Flash App" */
 h1 {
-    color: #6a1b9a; /* Deep purple */
-    font-size: 28px;
-    font-weight: 600; //boldness -> semibold
-    text-align: center;
-    margin-bottom: 30px; //space below the title
-    letter-spacing: -0.5px; // letters slightly closer together
+    color: #6a1b9a;  /* Deep purple color */
+    font-size: 28px;  /* Large text */
+    font-weight: 600;  /* Semi-bold */
+    text-align: center;  /* Centered text */
+    margin-bottom: 30px;  /* Space below the heading */
+    letter-spacing: -0.5px;  /* Slightly tighter letter spacing */
 }
 
-/* Subtitle */
+/* Subheading (h3) - like section titles */
 h3 {
-    color: #6a1b9a;
-    font-size: 20px;
-    font-weight: 500;
-    text-align: center;
-    margin-bottom: 20px;
+    color: #6a1b9a;  /* Purple color */
+    font-size: 20px;  /* Medium-large text */
+    font-weight: 500;  /* Medium weight */
+    text-align: center;  /* Centered */
+    margin-bottom: 20px;  /* Space below */
 }
 
-/* Styles text boxes like username, password, and flashcard input */
-input[type="text"], /*Targets all text inputs*/
-input[type="password"], 
-textarea {
-    width: 100%; /*Full width of the container ok*/
-    padding: 14px;
-    border: 2px solid #e1e5e9; /* Light gray border */
-    border-radius: 10px;
-    font-size: 16px;
-    font-family: inherit; /*Uses the same font as the page*/
-    margin-bottom: 15px;
-    /* when hovering over the box, the border color and shadow will change smoothly over 0.3       seconds*/
-    transition: border-color 0.3s ease, box-shadow 0.3s ease; 
-}
-/*Focus state for input fields when you click on the box.*/  
-input[type="text"]:focus, 
-input[type="password"]:focus, 
-textarea:focus {
-    outline: none;
-    border-color: #6a1b9a; /* Purple border on focus */
-    box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.1);
+/* ============================================================================
+   INPUT FIELDS - Text boxes and text areas
+   ============================================================================ */
+
+/* This applies to all text inputs, password inputs, and textareas */
+input[type="text"],  /* Text input boxes */
+input[type="password"],  /* Password input boxes */
+textarea {  /* Multi-line text areas */
+    width: 100%;  /* Take up full width of container */
+    padding: 14px;  /* Space inside the box */
+    border: 2px solid #e1e5e9;  /* Light gray border, 2px thick */
+    border-radius: 10px;  /* Rounded corners */
+    font-size: 16px;  /* Text size */
+    font-family: inherit;  /* Use the same font as the page */
+    margin-bottom: 15px;  /* Space below each input */
+    /* Smooth transitions when the input changes state */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    /* transition: property duration easing-function */
 }
 
-/* Placeholder text */
-input::placeholder, 
-textarea::placeholder {
-    color: #9ca3af;
-    font-weight: 400;
+/* Focus state - when you click on an input field */
+input[type="text"]:focus,  /* When text input is active */
+input[type="password"]:focus,  /* When password input is active */
+textarea:focus {  /* When textarea is active */
+    outline: none;  /* Remove the default browser outline */
+    border-color: #6a1b9a;  /* Change border to purple */
+    box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.1);  /* Add purple glow */
+    /* box-shadow: x-offset y-offset blur spread color */
 }
 
-/* Buttons */
+/* Placeholder text - the gray text that shows before you type */
+input::placeholder,  /* For input fields */
+textarea::placeholder {  /* For textareas */
+    color: #9ca3af;  /* Medium gray color */
+    font-weight: 400;  /* Normal weight */
+}
+
+/* ============================================================================
+   BUTTONS - All button styles
+   ============================================================================ */
+
+/* Base button style - applies to all buttons */
 .btn {
-    /*allows buttons to be in line with other elements. */
-    display: inline-block; 
-    /*12px top/bottom, 24px left/right space inside.*/
-    padding: 12px 24px;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 500;
-    /*No underline (for link buttons).*/
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-    width: 100%;
-    margin-bottom: 10px;
+    display: inline-block;  /* Can sit in a line with other elements */
+    padding: 12px 24px;  /* 12px top/bottom, 24px left/right */
+    border: none;  /* No border by default */
+    border-radius: 10px;  /* Rounded corners */
+    font-size: 16px;  /* Text size */
+    font-weight: 500;  /* Medium weight */
+    text-decoration: none;  /* No underline (for link buttons) */
+    cursor: pointer;  /* Show pointer cursor when hovering */
+    transition: all 0.3s ease;  /* Smooth transition for ALL properties */
+    text-align: center;  /* Center text */
+    width: 100%;  /* Full width of container */
+    margin-bottom: 10px;  /* Space below each button */
 }
 
-/* Primary button (Add Words, Login, Register) */
+/* Primary button - the main action buttons like "Add Words", "Start Review" */
 .btn-primary {
-    background: #6a1b9a; /* Deep purple */
-    color: white;
+    background: #6a1b9a;  /* Deep purple background */
+    color: white;  /* White text */
 }
 
+/* Primary button hover effect - when you move mouse over it */
 .btn-primary:hover {
-    background: #5a168a; /* Darker purple */
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(106, 27, 154, 0.3);
+    background: #5a168a;  /* Darker purple */
+    transform: translateY(-1px);  /* Lift up by 1 pixel */
+    box-shadow: 0 4px 12px rgba(106, 27, 154, 0.3);  /* Add shadow */
 }
 
-/* Secondary button (Review, Logout) */
+/* Secondary button - less important actions like "Review", "Back" */
 .btn-secondary {
-    background: white;
-    color: #6a1b9a;
-    border: 2px solid #6a1b9a;
+    background: white;  /* White background */
+    color: #6a1b9a;  /* Purple text */
+    border: 2px solid #6a1b9a;  /* Purple border */
 }
 
+/* Secondary button hover effect */
 .btn-secondary:hover {
-    background: #6a1b9a;
-    color: white;
-    transform: translateY(-1px);
+    background: #6a1b9a;  /* Purple background */
+    color: white;  /* White text (inverted colors) */
+    transform: translateY(-1px);  /* Lift up slightly */
 }
 
-/* Flashcard list Container*/
+/* ============================================================================
+   FLASHCARD LIST - The list of flashcards
+   ============================================================================ */
+
+/* Container for the list of flashcards */
 .list-group {
-    margin-top: 20px;
+    margin-top: 20px;  /* Space above the list */
 }
-/*Actual flashcard*/
+
+/* Individual flashcard item in the list */
 .list-group-item {
-    background: white;
-    border: 1px solid #e1e5e9;
-    border-radius: 10px;
-    padding: 16px;
-    margin-bottom: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
+    background: white;  /* White background */
+    border: 1px solid #e1e5e9;  /* Light gray border */
+    border-radius: 10px;  /* Rounded corners */
+    padding: 16px;  /* Space inside */
+    margin-bottom: 12px;  /* Space between cards */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);  /* Subtle shadow */
+    transition: all 0.3s ease;  /* Smooth transitions */
 }
 
+/* Flashcard hover effect - when you move mouse over a card */
 .list-group-item:hover {
-    box-shadow: 0 4px 12px rgba(106, 27, 154, 0.1);
-    transform: translateY(-1px); /*lifts the card*/
-    border-color: #6a1b9a;
+    box-shadow: 0 4px 12px rgba(106, 27, 154, 0.1);  /* Bigger purple shadow */
+    transform: translateY(-1px);  /* Lift up by 1 pixel */
+    border-color: #6a1b9a;  /* Purple border */
 }
 
-/* Alert messages */
+/* ============================================================================
+   ALERT MESSAGES - Success/error/warning messages
+   ============================================================================ */
+
+/* Base alert style */
 .alert {
-    border-radius: 10px;
-    border: none;
-    margin-bottom: 20px;
-    padding: 15px;
-    font-weight: 400;
+    border-radius: 10px;  /* Rounded corners */
+    border: none;  /* No border */
+    margin-bottom: 20px;  /* Space below */
+    padding: 15px;  /* Space inside */
+    font-weight: 400;  /* Normal weight */
 }
 
+/* Warning alert - for warnings */
 .alert-warning {
-    background: #fff3cd;
-    color: #856404;
-    border-left: 4px solid #6a1b9a; /*purple stripe on the left*/
+    background: #fff3cd;  /* Light yellow background */
+    color: #856404;  /* Dark brown text */
+    border-left: 4px solid #6a1b9a;  /* Purple stripe on left */
 }
 
-/* Links */
+/* ============================================================================
+   LINKS - Clickable text links
+   ============================================================================ */
+
+/* All links on the page */
 a {
-    color: #6a1b9a;
-    text-decoration: none; /*No underline*/
-    font-weight: 500;
-    transition: color 0.3s ease;
+    color: #6a1b9a;  /* Purple color */
+    text-decoration: none;  /* No underline by default */
+    font-weight: 500;  /* Medium weight */
+    transition: color 0.3s ease;  /* Smooth color transition */
 }
 
+/* Link hover effect */
 a:hover {
-    color: #ab47bc;
-    text-decoration: underline;
+    color: #ab47bc;  /* Lighter purple */
+    text-decoration: underline;  /* Add underline on hover */
 }
 
-/* Welcome message */
+/* ============================================================================
+   WELCOME MESSAGE - Special styling for welcome boxes
+   ============================================================================ */
+
 .welcome {
-    background: #f8f9fa;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-left: 4px solid #6a1b9a;
-    text-align: center;
-    font-weight: 400;
+    background: #f8f9fa;  /* Very light gray */
+    border-radius: 10px;  /* Rounded corners */
+    padding: 15px;  /* Space inside */
+    margin-bottom: 20px;  /* Space below */
+    border-left: 4px solid #6a1b9a;  /* Purple stripe on left */
+    text-align: center;  /* Center text */
+    font-weight: 400;  /* Normal weight */
 }
 
-/* Mobile responsiveness - Changes the layout for phones*/
+/* ============================================================================
+   MOBILE RESPONSIVENESS - Adjustments for phones
+   @media means "only apply these styles when condition is true"
+   max-width: 600px means "screens 600 pixels wide or less"
+   ============================================================================ */
+
 @media (max-width: 600px) {
+    /* On small screens, adjust the container */
     .container {
-        margin: 20px 10px;
-        padding: 20px;
+        margin: 20px 10px;  /* Less margin on small screens */
+        padding: 20px;  /* Less padding */
     }
 
+    /* Make the main heading smaller on phones */
     h1 {
-        font-size: 24px;
+        font-size: 24px;  /* Smaller font */
     }
 
+    /* Make buttons slightly smaller on phones */
     .btn {
-        padding: 12px 20px;
-        font-size: 15px;
+        padding: 12px 20px;  /* Less padding */
+        font-size: 15px;  /* Smaller text */
     }
 }
 
-/* Loading animation (for future use) - It creates a Spinning Purple Circle */
+/* ============================================================================
+   LOADING ANIMATION - Spinning circle (for future use)
+   This creates a purple spinning circle for loading states
+   ============================================================================ */
+
 .loading {
-    border: 2px solid #f3f3f3;
-    border-top: 2px solid #6a1b9a;
-    border-radius: 50%; /*Makes it a circle*/
-    width: 20px;
-    height: 20px;
-    animation: spin 1s linear infinite; 
-    margin: 10px auto; /* auto center the circle on the page*/
+    border: 2px solid #f3f3f3;  /* Light gray border */
+    border-top: 2px solid #6a1b9a;  /* Purple border on top only */
+    border-radius: 50%;  /* Make it a perfect circle */
+    width: 20px;  /* 20 pixels wide */
+    height: 20px;  /* 20 pixels tall */
+    animation: spin 1s linear infinite;  /* Apply spin animation */
+    /* animation: name duration timing-function iteration-count */
+    margin: 10px auto;  /* 10px top/bottom, centered horizontally */
 }
 
+/* Define the spin animation */
 @keyframes spin {
-    0% { transform: rotate(0deg); } /*Starts at 0 degrees*/
-    100% { transform: rotate(360deg); } /*Ends at 360 degrees*/
+    0% {  /* At start */
+        transform: rotate(0deg);  /* No rotation */
+    }
+    100% {  /* At end */
+        transform: rotate(360deg);  /* Full circle rotation */
+    }
+    /* Browser will smoothly animate between 0 and 360 degrees */
 }

@@ -1,52 +1,139 @@
+<!-- 
+    ============================================================================
+    INPUT PAGE - Where users add new flashcards
+    Features: Folder selection, create new folders, text area for word:meaning pairs
+    ============================================================================
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Character encoding -->
     <meta charset="UTF-8">
+    
+    <!-- Makes page responsive on mobile -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Browser tab title -->
     <title>Flashcard App</title>
+    
+    <!-- Load Bootstrap CSS framework -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Load our custom K-Pop purple theme CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='kpop-simple.css') }}">
 </head>
 <body>
+    <!-- Main container - white card in center -->
+    <!-- text-center = center all text -->
+    <!-- py-4 = padding on y-axis (top and bottom) -->
     <div class="container text-center py-4">
+        
+        <!-- Page title with lightning bolt emoji -->
         <h1>⚡The Flash App</h1>
+        
+        <!-- Form that submits to this same page (POST method) -->
         <form method="POST">
-            <div class="mb-3">
+            
+            <!-- FOLDER SELECTION SECTION -->
+            <div class="mb-3">  <!-- mb-3 = margin-bottom -->
                 <label for="folder_select" class="form-label">Select Folder:</label>
+                
+                <!-- Bootstrap grid row -->
+                <!-- g-2 = gap between columns -->
+                <!-- justify-content-center = center the columns -->
                 <div class="row g-2 justify-content-center">
-                    <div class="col-auto">
+                    
+                    <!-- First column: Folder dropdown -->
+                    <div class="col-auto">  <!-- col-auto = width fits content -->
+                        <!-- Dropdown select box -->
                         <select name="folder_id" id="folder_select" class="form-select">
+                            <!-- Default option: add to Uncategorized -->
                             <option value="">Uncategorized</option>
+                            
+                            <!-- Loop through all folders from Python -->
+                            <!-- {% %} = Jinja template tags (Python in HTML) -->
                             {% for folder in folders %}
-                            <option value="{{ folder.id }}">{{ folder.name }}</option>
-                            {% endfor %}
+                                <!-- Create option for each folder -->
+                                <!-- {{ }} = Print value in Jinja -->
+                                <option value="{{ folder.id }}">{{ folder.name }}</option>
+                            {% endfor %}  <!-- End of loop -->
+                            
+                            <!-- Special option to create new folder -->
                             <option value="new_folder">+ Create New Folder</option>
                         </select>
                     </div>
+                    
+                    <!-- Second column: New folder name input (hidden by default) -->
                     <div class="col-auto" id="new_folder_input" style="display: none;">
-                        <input type="text" name="new_folder_name" class="form-control" placeholder="New folder name">
+                        <!-- Text input for new folder name -->
+                        <input type="text" 
+                               name="new_folder_name" 
+                               class="form-control" 
+                               placeholder="New folder name">
                     </div>
                 </div>
             </div>
-            <textarea name="words" rows="4" class="form-control" placeholder="cat:feline animal&#10;dog:canine pet"></textarea>
+            
+            <!-- FLASHCARDS INPUT TEXTAREA -->
+            <!-- Multi-line text area for entering flashcards -->
+            <!-- name="words" = sent to Python as request.form['words'] -->
+            <!-- rows="4" = show 4 lines -->
+            <!-- &#10; = HTML code for newline in placeholder -->
+            <textarea name="words" 
+                      rows="4" 
+                      class="form-control" 
+                      placeholder="cat:feline animal&#10;dog:canine pet"></textarea>
+            
             <br>
+            
+            <!-- SUBMIT BUTTON -->
+            <!-- type="submit" = submits the form -->
+            <!-- btn btn-primary = Bootstrap purple button -->
             <button type="submit" class="btn btn-primary">Add Words</button>
         </form>
+        
         <br>
+        
+        <!-- NAVIGATION BUTTONS -->
+        
+        <!-- Link to My Flashcards page -->
+        <!-- href="/my-flashcards" = goes to /my-flashcards route -->
         <a href="/my-flashcards" class="btn btn-secondary">My Flashcards</a>
+        
         <br>
+        
+        <!-- Link to Review page -->
         <a href="/review" class="btn btn-secondary">Review Flashcards</a>
+        
         <br><br>
+        
+        <!-- Back to landing page link -->
+        <!-- btn-sm = small button -->
+        <!-- btn-outline-secondary = outlined button style -->
         <a href="/" class="btn btn-sm btn-outline-secondary">← Back to Home</a>
     </div>
+    
+    <!-- Load Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Load sound effects -->
     <script src="{{ url_for('static', filename='sounds.js') }}"></script>
+    
+    <!-- JAVASCRIPT FOR SHOWING/HIDING NEW FOLDER INPUT -->
     <script>
+        // Get the folder dropdown element
         document.getElementById('folder_select').addEventListener('change', function() {
+            // addEventListener = do something when dropdown changes
+            
+            // Get the new folder name input div
             const newFolderInput = document.getElementById('new_folder_input');
+            
+            // If user selected "Create New Folder"
             if (this.value === 'new_folder') {
+                // Show the input box (change display from 'none' to 'block')
                 newFolderInput.style.display = 'block';
             } else {
+                // Otherwise hide it
                 newFolderInput.style.display = 'none';
             }
         });
