@@ -72,7 +72,8 @@
                         <strong>{{ card.word }}</strong>: {{ card.meaning }}
                         <div class="move-controls">
                             <form method="POST" action="/move-flashcard" style="display: inline;">
-                                <input type="hidden" name="flashcard_id" value="{{ card.id }}">
+                                <input type="hidden" name="flashcard_index" value="{{ loop.index0 }}">
+                                <input type="hidden" name="from_folder" value="{{ folder.id }}">
                                 <select name="to_folder" class="form-select form-select-sm d-inline-block w-auto">
                                     <option value="">Move to...</option>
                                     <option value="uncategorized">Uncategorized</option>
@@ -105,7 +106,8 @@
                     <strong>{{ card.word }}</strong>: {{ card.meaning }}
                     <div class="move-controls">
                         <form method="POST" action="/move-flashcard" style="display: inline;">
-                            <input type="hidden" name="flashcard_id" value="{{ card.id }}">
+                            <input type="hidden" name="flashcard_index" value="{{ loop.index0 }}">
+                            <input type="hidden" name="from_folder" value="uncategorized">
                             <select name="to_folder" class="form-select form-select-sm d-inline-block w-auto">
                                 <option value="">Move to...</option>
                                 {% for f in folders %}
