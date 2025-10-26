@@ -51,10 +51,10 @@
                             <option value="">Uncategorized</option>
                             
                             <!-- Loop through all folders from Python -->
-                            <!-- {% %} = Jinja template tags (Python in HTML) -->
+                            <!-- Jinja template syntax allows Python-like loops in HTML -->
                             {% for folder in folders %}
                                 <!-- Create option for each folder -->
-                                <!-- {{ }} = Print value in Jinja -->
+                                <!-- Jinja prints values with double curly braces -->
                                 <option value="{{ folder.id }}">{{ folder.name }}</option>
                             {% endfor %}  <!-- End of loop -->
                             

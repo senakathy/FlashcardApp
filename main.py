@@ -48,29 +48,6 @@ def save_data(data):
         # indent=2 makes the JSON file readable with nice formatting
         json.dump(data, f, indent=2)
 
-def migrate_old_data():
-    """
-    Migrate data from old flashcards.json format to new structure.
-    This helps users who had the old version of the app.
-    Returns the current data.
-    """
-    # Check if old file exists but new file doesn't
-    if os.path.exists('flashcards.json') and not os.path.exists(DATA_FILE):
-        # Open the old flashcards file
-        with open('flashcards.json', 'r') as f:
-            content = f.read().strip()
-            # If there's content in the old file
-            if content:
-                # Load the old flashcards
-                old_flashcards = json.loads(content)
-                # Create new data structure with old flashcards in 'uncategorized'
-                new_data = {'folders': [], 'uncategorized': old_flashcards}
-                # Save it in the new format
-                save_data(new_data)
-                return new_data
-    # If no migration needed, just load current data
-    return load_data()
-
 def get_all_flashcards():
     """
     Get all flashcards from all folders combined.
@@ -109,7 +86,7 @@ def home():
     POST: Processes new flashcards and saves them
     """
     # Load data and migrate old format if needed
-    data = migrate_old_data()
+    data = load_data()
     
     # If the user submitted the form (clicked "Add Words")
     if request.method == 'POST':
