@@ -86,12 +86,6 @@
                         </div>
                         {% endfor %}
                     </div>
-                    <div class="form-check mb-3" style="text-align: center;">
-                        <input class="form-check-input" type="checkbox" name="shuffle" id="shuffle_cards">
-                        <label class="form-check-label" for="shuffle_cards">
-                            <strong>🔀 Shuffle Cards</strong>
-                        </label>
-                    </div>
                     <button type="submit" class="btn btn-primary">Start Review</button>
                 </form>
                 <br>
@@ -111,6 +105,7 @@
                 </div>
                 <div class="swipe-buttons">
                     <button class="btn btn-secondary" onclick="previousCard()">Previous</button>
+                    <button class="btn btn-primary" onclick="shuffleCards()">🔀 Shuffle</button>
                     <button class="btn btn-secondary" onclick="nextCard()">Next</button>
                 </div>
                 <a href="/review" class="btn btn-secondary back-button">Change Selection</a>
@@ -156,6 +151,17 @@
             const back = document.querySelector('.card-back h3');
             front.textContent = flashcards[currentIndex].word;
             back.textContent = flashcards[currentIndex].meaning;
+        }
+
+        function shuffleCards() {
+            // Fisher-Yates shuffle algorithm
+            for (let i = flashcards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [flashcards[i], flashcards[j]] = [flashcards[j], flashcards[i]];
+            }
+            currentIndex = 0;
+            updateCard();
+            playSwipeSound();
         }
     </script>
 </body>

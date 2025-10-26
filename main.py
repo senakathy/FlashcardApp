@@ -96,7 +96,6 @@ def review():
     if request.method == 'POST':
         # Get selected folders from form
         selected_folders = request.form.getlist('selected_folders')
-        shuffle_cards = request.form.get('shuffle', '') == 'on'
         flashcards = []
         
         if 'all' in selected_folders:
@@ -113,11 +112,6 @@ def review():
                         if folder['id'] == folder_id:
                             flashcards.extend(folder['flashcards'])
                             break
-        
-        # Shuffle if requested
-        if shuffle_cards and flashcards:
-            import random
-            random.shuffle(flashcards)
         
         current_index = 0
         return render_template('review.html', flashcards=flashcards, current_index=current_index, 
