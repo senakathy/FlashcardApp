@@ -18,11 +18,6 @@
   ],
   "uncategorized": [
     {
-      "word": "comedor",
-      "meaning": "kitchen",
-      "folder": ""
-    },
-    {
       "word": "caliente",
       "meaning": "hot, padre: father",
       "folder": ""
@@ -30,6 +25,11 @@
     {
       "word": "pastel",
       "meaning": "cake",
+      "folder": ""
+    },
+    {
+      "word": "comedor",
+      "meaning": "kitchen",
       "folder": ""
     }
   ]

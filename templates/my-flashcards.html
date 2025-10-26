@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='kpop-simple.css') }}">
     <style>
         .folder-section {
-            margin: 20px 0;
-            padding: 15px;
+            margin: 15px 0;
+            padding: 12px;
             border: 2px solid #6a1b9a;
             border-radius: 10px;
             background: #f9f9f9;
@@ -26,13 +26,21 @@
             font-size: 1.2em;
         }
         .flashcard-item {
-            padding: 10px;
-            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            margin: 3px 0;
             background: white;
             border: 1px solid #ddd;
             border-radius: 5px;
             cursor: move;
             transition: all 0.2s;
+            font-size: 0.95em;
+        }
+        .flashcard-content {
+            flex: 1;
+            margin-right: 10px;
         }
         .flashcard-item:hover {
             box-shadow: 0 2px 8px rgba(106, 27, 154, 0.2);
@@ -47,20 +55,35 @@
             box-shadow: 0 0 10px rgba(106, 27, 154, 0.3);
         }
         .move-controls {
-            margin-top: 10px;
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+        .move-btn {
+            font-size: 0.85em;
+            padding: 4px 12px;
         }
         .create-folder-form {
             margin: 20px 0;
         }
         .folder-selector {
             display: none;
-            margin-top: 10px;
+            position: absolute;
+            right: 0;
+            margin-top: 5px;
             padding: 10px;
-            background: #f0f0f0;
+            background: white;
+            border: 2px solid #6a1b9a;
             border-radius: 5px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 100;
+            min-width: 200px;
         }
         .folder-selector.active {
             display: block;
+        }
+        .move-controls {
+            position: relative;
         }
     </style>
 </head>
@@ -93,9 +116,11 @@
                 {% if folder.flashcards %}
                     {% for card in folder.flashcards %}
                     <div class="flashcard-item" draggable="true" data-index="{{ loop.index0 }}" data-from-folder="{{ folder.id }}" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">
-                        <strong>{{ card.word }}</strong>: {{ card.meaning }}
+                        <div class="flashcard-content">
+                            <strong>{{ card.word }}</strong> : {{ card.meaning }}
+                        </div>
                         <div class="move-controls">
-                            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleMoveSelector(this)">Move</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary move-btn" onclick="toggleMoveSelector(this)">Move</button>
                             <div class="folder-selector">
                                 <form method="POST" action="/move-flashcard">
                                     <input type="hidden" name="flashcard_index" value="{{ loop.index0 }}">
@@ -109,7 +134,7 @@
                                             {% endif %}
                                         {% endfor %}
                                     </select>
-                                    <button type="submit" class="btn btn-sm btn-primary">Confirm Move</button>
+                                    <button type="submit" class="btn btn-sm btn-primary">Confirm</button>
                                     <button type="button" class="btn btn-sm btn-secondary" onclick="toggleMoveSelector(this.parentElement.parentElement)">Cancel</button>
                                 </form>
                             </div>
@@ -131,9 +156,11 @@
             {% if uncategorized %}
                 {% for card in uncategorized %}
                 <div class="flashcard-item" draggable="true" data-index="{{ loop.index0 }}" data-from-folder="uncategorized" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">
-                    <strong>{{ card.word }}</strong>: {{ card.meaning }}
+                    <div class="flashcard-content">
+                        <strong>{{ card.word }}</strong> : {{ card.meaning }}
+                    </div>
                     <div class="move-controls">
-                        <button type="button" class="btn btn-sm btn-secondary" onclick="toggleMoveSelector(this)">Move</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary move-btn" onclick="toggleMoveSelector(this)">Move</button>
                         <div class="folder-selector">
                             <form method="POST" action="/move-flashcard">
                                 <input type="hidden" name="flashcard_index" value="{{ loop.index0 }}">
@@ -144,7 +171,7 @@
                                     <option value="{{ f.id }}">{{ f.name }}</option>
                                     {% endfor %}
                                 </select>
-                                <button type="submit" class="btn btn-sm btn-primary">Confirm Move</button>
+                                <button type="submit" class="btn btn-sm btn-primary">Confirm</button>
                                 <button type="button" class="btn btn-sm btn-secondary" onclick="toggleMoveSelector(this.parentElement.parentElement)">Cancel</button>
                             </form>
                         </div>
