@@ -22,58 +22,72 @@ function playClickSound() {
     oscillator.stop(audioContext.currentTime + 0.05);
 }
 
-// Card flip sound (soft whoosh)
+// Card flip sound (whoosh)
 function playFlipSound() {
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-    const filter = audioContext.createBiquadFilter();
+    const bufferSize = audioContext.sampleRate * 0.15;
+    const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+    const data = buffer.getChannelData(0);
     
-    oscillator.connect(filter);
+    // Create white noise whoosh
+    for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 2);
+    }
+    
+    const noise = audioContext.createBufferSource();
+    const filter = audioContext.createBiquadFilter();
+    const gainNode = audioContext.createGain();
+    
+    noise.buffer = buffer;
+    noise.connect(filter);
     filter.connect(gainNode);
     gainNode.connect(audioContext.destination);
     
-    // Gentle rising tone
-    oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
-    oscillator.frequency.linearRampToValueAtTime(500, audioContext.currentTime + 0.08);
-    oscillator.type = 'sine';
+    // Swoosh filter - sweep from high to low
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(2000, audioContext.currentTime);
+    filter.frequency.exponentialRampToValueAtTime(500, audioContext.currentTime + 0.15);
+    filter.Q.value = 1;
     
-    // Low-pass filter for warmth
-    filter.type = 'lowpass';
-    filter.frequency.value = 800;
+    // Quick fade out
+    gainNode.gain.setValueAtTime(0.12, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
     
-    // Soft volume
-    gainNode.gain.setValueAtTime(0.06, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.08);
-    
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 0.08);
+    noise.start(audioContext.currentTime);
+    noise.stop(audioContext.currentTime + 0.15);
 }
 
-// Card swipe sound (subtle swoosh)
+// Card swipe sound (swoosh)
 function playSwipeSound() {
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-    const filter = audioContext.createBiquadFilter();
+    const bufferSize = audioContext.sampleRate * 0.2;
+    const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+    const data = buffer.getChannelData(0);
     
-    oscillator.connect(filter);
+    // Create white noise whoosh
+    for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 2.5);
+    }
+    
+    const noise = audioContext.createBufferSource();
+    const filter = audioContext.createBiquadFilter();
+    const gainNode = audioContext.createGain();
+    
+    noise.buffer = buffer;
+    noise.connect(filter);
     filter.connect(gainNode);
     gainNode.connect(audioContext.destination);
     
-    // Descending gentle tone
-    oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
-    oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.12);
-    oscillator.type = 'sine';
+    // Swoosh filter - sweep for movement effect
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(1500, audioContext.currentTime);
+    filter.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.2);
+    filter.Q.value = 1.5;
     
-    // Low-pass filter
-    filter.type = 'lowpass';
-    filter.frequency.value = 1000;
+    // Smooth fade
+    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
     
-    // Very soft
-    gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.12);
-    
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 0.12);
+    noise.start(audioContext.currentTime);
+    noise.stop(audioContext.currentTime + 0.2);
 }
 
 // Add click sound to all buttons
