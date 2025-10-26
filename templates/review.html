@@ -59,7 +59,7 @@
     <div class="container">
         <h1 class="text-center">Review Your Flashcards</h1>
         {% if flashcards and flashcards|length > 0 %}
-            <div class="flashcard" onclick="this.classList.toggle('flipped')">
+            <div class="flashcard" onclick="flipCard(this)">
                 <div class="card-inner">
                     <div class="card-front">
                         <h3>{{ flashcards[current_index].word }}</h3>
@@ -78,14 +78,22 @@
         {% endif %}
         <a href="/home" class="btn btn-secondary back-button">Back to Add Cards</a>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='sounds.js') }}"></script>
     <script>
         let currentIndex = {{ current_index }};
         const flashcards = {{ flashcards|tojson }};
+
+        function flipCard(element) {
+            element.classList.toggle('flipped');
+            playFlipSound();
+        }
 
         function nextCard() {
             if (currentIndex < flashcards.length - 1) {
                 currentIndex++;
                 updateCard();
+                playSwipeSound();
             }
         }
 
@@ -93,6 +101,7 @@
             if (currentIndex > 0) {
                 currentIndex--;
                 updateCard();
+                playSwipeSound();
             }
         }
 
