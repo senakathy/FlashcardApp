@@ -3,14 +3,15 @@
     {
       "id": "85f35269-00d9-45ac-96bb-eb760561c303",
       "name": "Family",
-      "flashcards": []
+      "flashcards": [
+        {
+          "word": "perro",
+          "meaning": "dog"
+        }
+      ]
     }
   ],
   "uncategorized": [
-    {
-      "word": "perro",
-      "meaning": "dog"
-    },
     {
       "word": "pero",
       "meaning": "but",

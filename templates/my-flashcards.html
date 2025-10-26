@@ -38,6 +38,16 @@
         .create-folder-form {
             margin: 20px 0;
         }
+        .folder-selector {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 5px;
+        }
+        .folder-selector.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -71,20 +81,24 @@
                     <div class="flashcard-item">
                         <strong>{{ card.word }}</strong>: {{ card.meaning }}
                         <div class="move-controls">
-                            <form method="POST" action="/move-flashcard" style="display: inline;">
-                                <input type="hidden" name="flashcard_index" value="{{ loop.index0 }}">
-                                <input type="hidden" name="from_folder" value="{{ folder.id }}">
-                                <select name="to_folder" class="form-select form-select-sm d-inline-block w-auto">
-                                    <option value="">Move to...</option>
-                                    <option value="uncategorized">Uncategorized</option>
-                                    {% for f in folders %}
-                                        {% if f.id != folder.id %}
-                                        <option value="{{ f.id }}">{{ f.name }}</option>
-                                        {% endif %}
-                                    {% endfor %}
-                                </select>
-                                <button type="submit" class="btn btn-sm btn-secondary">Move</button>
-                            </form>
+                            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleMoveSelector(this)">Move</button>
+                            <div class="folder-selector">
+                                <form method="POST" action="/move-flashcard">
+                                    <input type="hidden" name="flashcard_index" value="{{ loop.index0 }}">
+                                    <input type="hidden" name="from_folder" value="{{ folder.id }}">
+                                    <select name="to_folder" class="form-select form-select-sm mb-2" required>
+                                        <option value="">Select destination...</option>
+                                        <option value="uncategorized">Uncategorized</option>
+                                        {% for f in folders %}
+                                            {% if f.id != folder.id %}
+                                            <option value="{{ f.id }}">{{ f.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" class="btn btn-sm btn-primary">Confirm Move</button>
+                                    <button type="button" class="btn btn-sm btn-secondary" onclick="toggleMoveSelector(this.parentElement.parentElement)">Cancel</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                     {% endfor %}
@@ -105,17 +119,21 @@
                 <div class="flashcard-item">
                     <strong>{{ card.word }}</strong>: {{ card.meaning }}
                     <div class="move-controls">
-                        <form method="POST" action="/move-flashcard" style="display: inline;">
-                            <input type="hidden" name="flashcard_index" value="{{ loop.index0 }}">
-                            <input type="hidden" name="from_folder" value="uncategorized">
-                            <select name="to_folder" class="form-select form-select-sm d-inline-block w-auto">
-                                <option value="">Move to...</option>
-                                {% for f in folders %}
-                                <option value="{{ f.id }}">{{ f.name }}</option>
-                                {% endfor %}
-                            </select>
-                            <button type="submit" class="btn btn-sm btn-secondary">Move</button>
-                        </form>
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="toggleMoveSelector(this)">Move</button>
+                        <div class="folder-selector">
+                            <form method="POST" action="/move-flashcard">
+                                <input type="hidden" name="flashcard_index" value="{{ loop.index0 }}">
+                                <input type="hidden" name="from_folder" value="uncategorized">
+                                <select name="to_folder" class="form-select form-select-sm mb-2" required>
+                                    <option value="">Select destination...</option>
+                                    {% for f in folders %}
+                                    <option value="{{ f.id }}">{{ f.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button type="submit" class="btn btn-sm btn-primary">Confirm Move</button>
+                                <button type="button" class="btn btn-sm btn-secondary" onclick="toggleMoveSelector(this.parentElement.parentElement)">Cancel</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
@@ -128,5 +146,11 @@
         <a href="/" class="btn btn-secondary">Back to Add Cards</a>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleMoveSelector(element) {
+            const selector = element.parentElement.querySelector('.folder-selector') || element;
+            selector.classList.toggle('active');
+        }
+    </script>
 </body>
 </html>
