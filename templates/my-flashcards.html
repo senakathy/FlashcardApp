@@ -24,6 +24,27 @@
             color: #6a1b9a;
             font-weight: bold;
             font-size: 1.05em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .folder-name:hover {
+            opacity: 0.8;
+        }
+        .folder-cards {
+            display: none;
+            margin-top: 10px;
+        }
+        .folder-cards.active {
+            display: block;
+        }
+        .dropdown-arrow {
+            transition: transform 0.3s;
+            font-size: 0.8em;
+        }
+        .dropdown-arrow.rotated {
+            transform: rotate(90deg);
         }
         .flashcard-item {
             display: flex;
@@ -110,11 +131,15 @@
             {% for folder in folders %}
             <div class="folder-section" data-folder-id="{{ folder.id }}" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragleave="handleDragLeave(event)">
                 <div class="folder-header">
-                    <span class="folder-name">📁 {{ folder.name }} ({{ folder.flashcards|length }} cards)</span>
+                    <span class="folder-name" onclick="toggleFolder(this)">
+                        <span class="dropdown-arrow">▶</span>
+                        📁 {{ folder.name }} ({{ folder.flashcards|length }} cards)
+                    </span>
                     <form method="POST" action="/delete-folder/{{ folder.id }}" style="display: inline;">
                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this folder? Flashcards will move to Uncategorized.')">Delete</button>
                     </form>
                 </div>
+                <div class="folder-cards">
                 {% if folder.flashcards %}
                     {% for card in folder.flashcards %}
                     <div class="flashcard-item" draggable="true" data-index="{{ loop.index0 }}" data-from-folder="{{ folder.id }}" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">
@@ -151,6 +176,7 @@
                 {% else %}
                     <p class="text-muted">No flashcards in this folder yet.</p>
                 {% endif %}
+                </div>
             </div>
             {% endfor %}
         {% endif %}
@@ -158,8 +184,12 @@
         <!-- Uncategorized Flashcards -->
         <div class="folder-section" data-folder-id="uncategorized" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragleave="handleDragLeave(event)">
             <div class="folder-header">
-                <span class="folder-name">📄 Uncategorized ({{ uncategorized|length }} cards)</span>
+                <span class="folder-name" onclick="toggleFolder(this)">
+                    <span class="dropdown-arrow">▶</span>
+                    📄 Uncategorized ({{ uncategorized|length }} cards)
+                </span>
             </div>
+            <div class="folder-cards">
             {% if uncategorized %}
                 {% for card in uncategorized %}
                 <div class="flashcard-item" draggable="true" data-index="{{ loop.index0 }}" data-from-folder="uncategorized" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">
@@ -193,6 +223,7 @@
             {% else %}
                 <p class="text-muted">No uncategorized flashcards.</p>
             {% endif %}
+            </div>
         </div>
 
         <br>
@@ -204,6 +235,15 @@
         function toggleMoveSelector(element) {
             const selector = element.parentElement.querySelector('.folder-selector') || element;
             selector.classList.toggle('active');
+        }
+
+        function toggleFolder(element) {
+            const arrow = element.querySelector('.dropdown-arrow');
+            const folderSection = element.closest('.folder-section');
+            const folderCards = folderSection.querySelector('.folder-cards');
+            
+            arrow.classList.toggle('rotated');
+            folderCards.classList.toggle('active');
         }
 
         let draggedCard = null;
