@@ -45,9 +45,14 @@ def get_all_flashcards():
         all_cards.extend(folder['flashcards'])
     return all_cards
 
-# Route for the main page (add flashcards)
-@app.route('/', methods=['GET', 'POST'])
+# Route for the landing page
+@app.route('/')
 def index():
+    return render_template('landing.html')
+
+# Route for the main page (add flashcards)
+@app.route('/home', methods=['GET', 'POST'])
+def home():
     data = migrate_old_data()
     if request.method == 'POST':
         word_list = request.form['words'].split('\n')
