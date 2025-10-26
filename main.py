@@ -96,6 +96,7 @@ def review():
     if request.method == 'POST':
         # Get selected folders from form
         selected_folders = request.form.getlist('selected_folders')
+        review_mode = request.form.get('review_mode', 'flip')
         flashcards = []
         
         if 'all' in selected_folders:
@@ -115,7 +116,7 @@ def review():
         
         current_index = 0
         return render_template('review.html', flashcards=flashcards, current_index=current_index, 
-                             folders=data['folders'], show_selection=False)
+                             folders=data['folders'], show_selection=False, review_mode=review_mode)
     
     # GET request - show folder selection
     return render_template('review.html', flashcards=[], current_index=0, 
