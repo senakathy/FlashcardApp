@@ -56,12 +56,37 @@ def home():
     data = migrate_old_data()
     if request.method == 'POST':
         word_list = request.form['words'].split('\n')
+        folder_id = request.form.get('folder_id', '')
+        new_folder_name = request.form.get('new_folder_name', '').strip()
+        
+        # Create new folder if requested
+        if folder_id == 'new_folder' and new_folder_name:
+            new_folder = {
+                'id': str(uuid.uuid4()),
+                'name': new_folder_name,
+                'flashcards': []
+            }
+            data['folders'].append(new_folder)
+            folder_id = new_folder['id']
+        
+        # Add flashcards to selected folder or uncategorized
         for line in word_list:
             if ':' in line:
                 word, meaning = line.split(':', 1)
-                data['uncategorized'].append({'word': word.strip(), 'meaning': meaning.strip()})
+                new_card = {'word': word.strip(), 'meaning': meaning.strip()}
+                
+                if folder_id and folder_id != 'new_folder':
+                    # Add to specific folder
+                    for folder in data['folders']:
+                        if folder['id'] == folder_id:
+                            folder['flashcards'].append(new_card)
+                            break
+                else:
+                    # Add to uncategorized
+                    data['uncategorized'].append(new_card)
+        
         save_data(data)
-    return render_template('input.html')
+    return render_template('input.html', folders=data['folders'])
 
 # Route for the review page (flip cards with swipe)
 @app.route('/review')
