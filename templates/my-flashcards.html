@@ -56,12 +56,14 @@
         }
         .move-controls {
             display: flex;
-            gap: 5px;
-            align-items: center;
+            flex-direction: column;
+            gap: 3px;
+            align-items: stretch;
         }
-        .move-btn {
-            font-size: 0.85em;
-            padding: 4px 12px;
+        .move-btn, .delete-btn {
+            font-size: 0.75em;
+            padding: 3px 8px;
+            width: 60px;
         }
         .create-folder-form {
             margin: 20px 0;
@@ -121,10 +123,10 @@
                         </div>
                         <div class="move-controls">
                             <button type="button" class="btn btn-sm btn-outline-secondary move-btn" onclick="toggleMoveSelector(this)">Move</button>
-                            <form method="POST" action="/delete-flashcard" style="display: inline; margin-left: 5px;">
+                            <form method="POST" action="/delete-flashcard">
                                 <input type="hidden" name="flashcard_index" value="{{ loop.index0 }}">
                                 <input type="hidden" name="from_folder" value="{{ folder.id }}">
-                                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this flashcard?')">Delete</button>
+                                <button type="submit" class="btn btn-sm btn-outline-danger delete-btn" onclick="return confirm('Delete this flashcard?')">Delete</button>
                             </form>
                             <div class="folder-selector">
                                 <form method="POST" action="/move-flashcard">
@@ -166,10 +168,10 @@
                     </div>
                     <div class="move-controls">
                         <button type="button" class="btn btn-sm btn-outline-secondary move-btn" onclick="toggleMoveSelector(this)">Move</button>
-                        <form method="POST" action="/delete-flashcard" style="display: inline; margin-left: 5px;">
+                        <form method="POST" action="/delete-flashcard">
                             <input type="hidden" name="flashcard_index" value="{{ loop.index0 }}">
                             <input type="hidden" name="from_folder" value="uncategorized">
-                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this flashcard?')">Delete</button>
+                            <button type="submit" class="btn btn-sm btn-outline-danger delete-btn" onclick="return confirm('Delete this flashcard?')">Delete</button>
                         </form>
                         <div class="folder-selector">
                             <form method="POST" action="/move-flashcard">
