@@ -85,7 +85,7 @@ def home():
     GET: Shows the form to add flashcards
     POST: Processes new flashcards and saves them
     """
-    # Load data and migrate old format if needed
+    # Load data 
     data = load_data()
     
     # If the user submitted the form (clicked "Add Words")
@@ -95,7 +95,7 @@ def home():
         # Get which folder was selected (empty string if Uncategorized)
         folder_id = request.form.get('folder_id', '')
         # Get the new folder name if user wants to create one
-        new_folder_name = request.form.get('new_folder_name', '').strip()
+        new_folder_name = request.form.get('new_folder_name', '').strip() #k
         
         # Create new folder if user selected "Create New Folder" and entered a name
         if folder_id == 'new_folder' and new_folder_name:
@@ -120,7 +120,7 @@ def home():
                 new_card = {'word': word.strip(), 'meaning': meaning.strip()}
                 
                 # If a specific folder was selected
-                if folder_id and folder_id != 'new_folder':
+                if folder_id and folder_id != 'new_folder': #k
                     # Find the folder and add the card to it
                     for folder in data['folders']:
                         if folder['id'] == folder_id:
@@ -135,9 +135,9 @@ def home():
     
     # Render the input page with the list of folders
     # This shows the form whether it's GET or POST
-    return render_template('input.html', folders=data['folders'])
+    return render_template('input.html', folders=data['folders']) #k
 
-@app.route('/review', methods=['GET', 'POST'])
+@app.route('/review', methods=['GET', 'POST']) #k
 def review():
     """
     Review page - where you study your flashcards.
@@ -150,9 +150,9 @@ def review():
     # If user submitted the selection form (clicked "Start Review")
     if request.method == 'POST':
         # Get all selected folder checkboxes (returns a list)
-        selected_folders = request.form.getlist('selected_folders')
+        selected_folders = request.form.getlist('selected_folders') #getlist is used to get            multiple values from a form
         # Get which review mode they chose (flip or quiz)
-        review_mode = request.form.get('review_mode', 'flip')
+        review_mode = request.form.get('review_mode', 'flip') #k
         # Start with empty flashcards list
         flashcards = []
         
@@ -169,7 +169,7 @@ def review():
             
             # Loop through each selected folder ID
             for folder_id in selected_folders:
-                # Skip 'uncategorized' since we already handled it
+                # Skip 'uncategorized' since we already handled it #k
                 if folder_id != 'uncategorized':
                     # Find this folder in our data
                     for folder in data['folders']:
@@ -208,7 +208,7 @@ def my_flashcards():
                          folders=data['folders'],  # All folders with their cards
                          uncategorized=data['uncategorized'])  # Uncategorized cards
 
-@app.route('/create-folder', methods=['POST'])
+@app.route('/create-folder', methods=['POST']) #K
 def create_folder():
     """
     Creates a new empty folder.
@@ -244,9 +244,9 @@ def move_flashcard():
     # Load current data
     data = load_data()
     # Get which flashcard to move (its position in the list)
-    flashcard_index = int(request.form.get('flashcard_index', 0))
+    flashcard_index = int(request.form.get('flashcard_index', 0)) #how
     # Get where it's coming from
-    from_folder = request.form.get('from_folder', '')
+    from_folder = request.form.get('from_folder', '') #how
     # Get where it's going to
     to_folder = request.form.get('to_folder', '')
     
@@ -326,7 +326,7 @@ def delete_flashcard():
     return redirect(url_for('my_flashcards'))
 
 @app.route('/delete-folder/<folder_id>', methods=['POST'])
-def delete_folder(folder_id):
+def delete_folder(folder_id): #who is passing folder_id?
     """
     Deletes a folder and moves its flashcards to Uncategorized.
     Called when you click Delete on a folder.
